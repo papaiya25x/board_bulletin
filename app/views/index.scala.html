@@ -1,0 +1,55 @@
+@(userForm: Form[UserForm],items: List[Form[UserItem]])
+
+@views.html.main("一覧") {
+<div class="container">
+  <div class="row">
+    <div class="page-header">
+      @helper.form(action = routes.Application.index()) {
+        <div class="form-inline">
+          <h3>掲示板トップ</h3>
+         
+        </div>
+      }
+    
+    </div>
+  <div class="page-header">
+    @helper.form(action = routes.Application.create()) {
+      <input type="hidden" value="@userForm("id").value.getOrElse("")" name="id">
+      @helper.inputText(userForm("name"),
+        '_label -> "名前")
+      @helper.inputText(userForm("title"),
+        '_label -> "タイトル")
+      @helper.inputText(userForm("message"),
+        '_label -> "内容")
+    
+      <input type="submit" class="btn btn-primary" value="投稿" />
+    }
+    </div>
+    <h3>投稿一覧</h3>
+    <div>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>名前</th>
+            <th>タイトル</th>
+            <th>投稿内容</th>
+            <th>投稿時刻</th>
+          </tr>
+        </thead>
+        <tbody>
+        @items.map { field =>
+          <tr>
+            <td>@field("id").value.getOrElse("")</td>
+            <td>@field("name").value.getOrElse("")</td>
+            <td>@field("title").value.getOrElse("")</td>
+            <td>@field("message").value.getOrElse("")</td>
+            <td>@field("createdAt").value.getOrElse("")</td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+}
